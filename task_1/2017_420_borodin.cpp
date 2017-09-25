@@ -181,26 +181,20 @@ void next_state(State state,
         assignment = f_code[c_f];
         state[assignment.field] = assignment.value;
         next_state(
-            state, 
-            states, 
-            f_code,
-            c_f + 1,
-            g_code,
-            c_g
+            state, states,
+            f_code, c_f + 1,
+            g_code, c_g
         );
-    }    
+    }
     
     if (c_g < g_code.size() - 1) {
         /* Choose to execute next operator of g function */
         assignment = g_code[c_g];
         state[assignment.field] = assignment.value;
         next_state(
-            state, 
-            states, 
-            f_code,
-            c_f,
-            g_code,
-            c_g + 1
+            state, states,
+            f_code, c_f,
+            g_code, c_g + 1
         );
     }    
 }
@@ -283,6 +277,7 @@ int main(int argc, char **argv) {
         return 0;
     }
 
+    // Recursively calculate set of states
     std::set<State> states = calculate_states(
         args.values[0], 
         args.values[1],
@@ -290,9 +285,11 @@ int main(int argc, char **argv) {
         args.values[3]
     );
 
+    // Write states to file
     std::ofstream f(args.filename);
     f << states;
 
+    // Write count to stdout
     std::cout << "Possible states count: " << states.size() << std::endl;
 }
 
