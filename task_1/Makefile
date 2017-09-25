@@ -11,3 +11,9 @@ task_1: $(SRC)
 run: task_1
 	./task_1
 	./task_1 1 2 3 4
+
+сlean:
+	rm -f task_1
+	rm -f states.txt
+
+.PHONY: run clean
