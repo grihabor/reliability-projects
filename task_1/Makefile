@@ -11,9 +11,9 @@ task_1: $(SRC)
 run: task_1
 	./task_1
 	./task_1 1 2 3 4
-	./task_1 -1 -2 -3 -4 -count -file custom.txt
+	./task_1 -1 -2 -3 -4 -count -file custom_states.txt
 
-сlean:
-	rm task_1 states.txt custom.txt
+clean:
+	rm -f task_1 *states.txt
 
-.PHONY: all run clean
+.PHONY: all run
