@@ -14,8 +14,6 @@ run: task_1
 	./task_1 -1 -2 -3 -4 -count -file custom.txt
 
 сlean:
-	rm -f task_1
-	rm -f states.txt
-	rm -f custom.txt
+	rm task_1 states.txt custom.txt
 
 .PHONY: all run clean
