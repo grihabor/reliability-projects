@@ -7,7 +7,7 @@ task_1: $(SRC)
 		-o task_1 \
 		-std=c++11 \
 		$(SRC)
- 
+
 run: task_1
 	./task_1
 	./task_1 1 2 3 4
@@ -16,5 +16,6 @@ run: task_1
 сlean:
 	rm -f task_1
 	rm -f states.txt
+	rm -f custom.txt
 
-.PHONY: run clean
+.PHONY: all run clean

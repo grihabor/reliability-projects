@@ -298,7 +298,9 @@ int main(int argc, char **argv) {
     // Write count to stdout
     std::cout << "Possible states count: " << states.size() << std::endl;
     if (args.print_total_count) {
-        std::cout << "Total states count: " << "6 * 7 * 3 * 3 * 3 * 2 * 4 * 2 ^ (32 * 4)" << std::endl;
+        std::cout << "Total states count: ";
+	std::cout << "6 * 7 * 3 * 3 * 3 * 2 * 4 * 2 ^ (32 * 4) = ";
+	std::cout << 6 * 7 * 3 * 3 * 3 * 2 * 4 << " * 2 ^ (32 * 4)" << std::endl;
     }
 }
 
