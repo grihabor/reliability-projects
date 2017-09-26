@@ -1,3 +1,9 @@
+/*
+ * Reliability Task 1
+ * Borodin Gregory
+ * 2017
+ */
+
 #include <iostream>
 #include <fstream>
 #include <string>
