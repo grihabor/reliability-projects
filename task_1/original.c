@@ -3,50 +3,50 @@ void
 f (int a, int b)
 {
   int x, y;
-  x = 10;
-  y = 5;
-  h = 3;
-  x = 4;
-  y = 9;
-  if (h < y - x)
+0:  x = 10;
+1:  y = 5;
+2:  h = 3;
+3:  x = 4;
+4:  y = 9;
+5:  if (h < y - x)
     {
-      if (y < 7)
+6:      if (y < 7)
         {
-          if (h > 5)
+7:          if (h > 5)
             {
-              y = 6;
+8:              y = 6;
             }
-          x = 1;
+9:          x = 1;
         }
     }
-}
+10:}
 
 void
 g (int a, int b)
 {
   int x, y;
-  x = 4;
-  y = 3;
-  h = b;
-  if (y > 5)
+0:  x = 4;
+1:  y = 3;
+2:  h = b;
+3:  if (y > 5)
     {
-      x = 10;
+4:      x = 10;
     }
   else
     {
-      h = x;
+5:      h = x;
     }
-  x = 3;
-  y = 3;
-  while (x < 2)
+6:  x = 3;
+7:  y = 3;
+8:  while (x < 2)
     {
-      if (h > 0)
+9:      if (h > 0)
         break;
-      if (h < x + y)
+10:      if (h < x + y)
         {
-          h = y - x;
-          y = 3;
-          x = 9;
+11:          h = y - x;
+12:          y = 3;
+13:          x = 9;
         }
     }
-}
+14:}

@@ -5,11 +5,11 @@ void
 f (int a, int b)
 {
     int x, y;
-1:  x = 10;
-2:  y = 5;
-3:  h = 3;
-4:  x = 4;
-5:  y = 9;
+0:  x = 10;
+1:  y = 5;
+2:  h = 3;
+3:  x = 4;
+4:  y = 9;
 
     // always true
     if (h < y - x) {
@@ -22,24 +22,24 @@ f (int a, int b)
             x = 1;
         }
     }
-6:}
+5:}
 
 void
 g (int a, int b) {
 
     int x, y;
-1:  x = 4;
-2:  y = 3;
-3:  h = b;
+0:  x = 4;
+1:  y = 3;
+2:  h = b;
 
     // always false
     if (y > 5) {
          x = 10;
     } else {
-4:       h = x; // h = 4;
+3:       h = x; // h = 4;
     }
-5:  x = 3;
-6:  y = 3;
+4:  x = 3;
+5:  y = 3;
 
     // always false
     while (x < 2) {
@@ -53,4 +53,4 @@ g (int a, int b) {
         }
     }
 
-7:}
+6:}
