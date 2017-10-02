@@ -3,14 +3,11 @@
 //
 
 #include "../header/assign.h"
-#include <string>
 
 Assign::Assign(std::string field, std::string value)
-    : field(std::move(field)),
-      value(std::move(value))
-{}
+        : field(std::move(field)),
+          value(std::move(value)) {}
 
 Assign::Assign()
-    : field(std::string("")),
-      value(std::string(""))
-{}
+        : field(std::string("")),
+          value(std::string("")) {}

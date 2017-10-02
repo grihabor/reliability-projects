@@ -20,6 +20,7 @@ struct Args {
     bool ok;
 
     Args();
+
     Args(int argc, char **argv);
 };
 

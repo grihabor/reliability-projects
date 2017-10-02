@@ -5,12 +5,11 @@
  */
 
 #include "header/run.h"
-#include "header/args.h"
 
 
 int main(int argc, char **argv) {
     /* Entrypoint */
-    
+
     // Parse arguments from 1 to argc-1
     Args args(argc - 1, argv + 1);
     run(args);

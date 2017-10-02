@@ -12,6 +12,7 @@ struct Assign {
     std::string value;
 
     Assign(std::string field, std::string value);
+
     Assign();
 };
 

@@ -17,12 +17,13 @@ private:
 public:
     explicit State(StateMapping initial_mapping);
 
-    std::string operator[] (const std::string& field) const;
-    std::string& operator[] (const std::string& field);
+    std::string operator[](const std::string &field) const;
 
-    bool operator< (const State& other) const;
+    std::string &operator[](const std::string &field);
+
+    bool operator<(const State &other) const;
 };
 
-std::ostream& operator<<(std::ostream& os, const State& state);
+std::ostream &operator<<(std::ostream &os, const State &state);
 
 #endif //TASK_2_STATE_H

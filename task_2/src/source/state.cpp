@@ -9,26 +9,25 @@
 #include "../header/state.h"
 
 State::State(StateMapping initial_mapping)
-    : mapping(std::move(initial_mapping))
-{/* Constructor */}
+        : mapping(std::move(initial_mapping)) {/* Constructor */}
 
-std::string State::operator[] (const std::string& field) const {
+std::string State::operator[](const std::string &field) const {
     /* Overloaded const [] access */
     return this->mapping.at(field);
 }
 
-std::string& State::operator[] (const std::string& field) {
+std::string &State::operator[](const std::string &field) {
     /* Overloaded reference [] access */
     return this->mapping.at(field);
 }
 
-bool State::operator< (const State& other) const {
+bool State::operator<(const State &other) const {
     /* *
      * Overloaded comparison between states
      *
      * This function allows State objects to be stored in std::set
      * */
-    const State& self = *this;
+    const State &self = *this;
 
     // Initialize conditions to check for `less`
     std::vector<bool> less_conditions;
@@ -52,7 +51,7 @@ bool State::operator< (const State& other) const {
 }
 
 
-std::ostream& operator<<(std::ostream& os, const State& state) {
+std::ostream &operator<<(std::ostream &os, const State &state) {
     /* A function to print out a State object */
     os << std::setw(3) << state["c_f"] << ", ";
     os << std::setw(3) << state["c_g"] << ", ";

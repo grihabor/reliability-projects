@@ -46,7 +46,7 @@ Args parse_args(int argc, char **argv) {
             // parse int value and store in `values`
             try {
                 value = std::stoi(arg);
-            } catch (const std::invalid_argument& e) {
+            } catch (const std::invalid_argument &e) {
                 std::cout <<
                           "Failed to cast `" << arg << "` to int"
                           << std::endl;
@@ -68,8 +68,7 @@ Args::Args()
         : filename(std::string("states.txt")),
           print_total_count(false),
           values{0, 0, 0, 0},
-          ok(false)
-{}
+          ok(false) {}
 
 Args::Args(int argc, char **argv) {
     Args args = parse_args(argc, argv);

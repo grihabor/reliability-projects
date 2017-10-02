@@ -23,12 +23,11 @@ void print_info() {
 }
 
 
-
 void next_state(State state,
-                std::set<State>& states,
-                const std::vector<Assign>& f_code,
+                std::set<State> &states,
+                const std::vector<Assign> &f_code,
                 uint c_f,
-                const std::vector<Assign>& g_code,
+                const std::vector<Assign> &g_code,
                 uint c_g) {
 
     // Add state to state set
@@ -104,7 +103,7 @@ std::set<State> calculate_states(int f_a, int f_b, int g_a, int g_b) {
 }
 
 
-std::ostream& operator<<(std::ostream& os, const std::set<State>& states) {
+std::ostream &operator<<(std::ostream &os, const std::set<State> &states) {
     os << "c_f, c_g,   h, f.x, f.y, g.x, g.y" << std::endl;
     for (const State &state: states) {
         os << state << std::endl;
