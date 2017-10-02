@@ -111,6 +111,17 @@ std::ostream &operator<<(std::ostream &os, const std::set<State> &states) {
     return os;
 }
 
+std::map<int, State> enumerate_states(std::set<State> states) {
+    std::map<int, State> mapping;
+    int counter = 0;
+    for (const State &state: states) {
+        mapping.insert(std::make_pair(counter, state));
+        ++counter;
+    }
+    return mapping;
+};
+
+
 int run(Args args) {
     if (!args.ok) {
         /* too few args */
