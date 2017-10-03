@@ -76,8 +76,7 @@ void next_state(State current_state,
     }
 }
 
-std::pair<StatesSet, LinksSet>
-calculate_states(int f_a, int f_b, int g_a, int g_b) {
+std::vector<Assign> generate_f_code() {
 
     // Fill in the f function code
     std::vector<Assign> f_code;
@@ -88,6 +87,10 @@ calculate_states(int f_a, int f_b, int g_a, int g_b) {
     f_code.emplace_back("f.y", "9");
     f_code.emplace_back();
 
+    return f_code;
+}
+
+std::vector<Assign> generate_g_code(int g_b) {
     // Fill in the g function code
     std::vector<Assign> g_code;
     g_code.emplace_back("g.x", "4");
@@ -97,6 +100,15 @@ calculate_states(int f_a, int f_b, int g_a, int g_b) {
     g_code.emplace_back("g.x", "3");
     g_code.emplace_back("g.y", "3");
     g_code.emplace_back();
+
+    return g_code;
+}
+
+std::pair<StatesSet, LinksSet>
+calculate_states(int f_a, int f_b, int g_a, int g_b) {
+
+    auto f_code = generate_f_code();
+    auto g_code = generate_g_code(g_b);
 
     // Initialize states
     StatesSet states;
@@ -143,7 +155,6 @@ std::map<int, State> enumerate_states(std::set<State> states) {
 typedef std::map<std::string, int> IndexMapping;
 
 int get_index(const State& state, IndexMapping mapping) {
-    std::cout << state << std::endl;
     std::string s = static_cast<std::string>(state);
     return mapping.at(s);
 }
@@ -194,7 +205,6 @@ int run(Args args) {
         print_info();
         return 0;
     }
-
 
     StatesSet states;
     LinksSet links;

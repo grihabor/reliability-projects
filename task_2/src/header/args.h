@@ -19,6 +19,9 @@ struct Args {
     // if format is valid
     bool ok;
 
+    // if you should generate lts
+    bool lts;
+
     Args();
 
     Args(int argc, char **argv);
