@@ -5,6 +5,7 @@
 #include <vector>
 #include <iomanip>
 #include <iostream>
+#include <sstream>
 #include "../header/state_mapping.h"
 #include "../header/state.h"
 
@@ -28,37 +29,27 @@ bool State::operator<(const State &other) const {
      * This function allows State objects to be stored in std::set
      * */
     const State &self = *this;
+    return static_cast<std::string>(self) < static_cast<std::string>(other);
+}
 
-    // Initialize conditions to check for `less`
-    std::vector<bool> less_conditions;
-    less_conditions.push_back(self["c_f"] < other["c_f"]);
-    less_conditions.push_back(self["c_g"] < other["c_g"]);
-    less_conditions.push_back(self["h"] < other["h"]);
-    less_conditions.push_back(self["f.x"] < other["f.x"]);
-    less_conditions.push_back(self["f.y"] < other["f.y"]);
-    less_conditions.push_back(self["g.x"] < other["g.x"]);
-    less_conditions.push_back(self["g.y"] < other["g.y"]);
+State::operator std::string() const {
+    std::stringstream ss;
+    const State& state = *this;
 
-    for (bool c : less_conditions) {
-        /* Iterate through conditions */
-        if (c) {
-            /* If any condition is true */
-            return true;
-        }
-    }
-    // Otherwise
-    return false;
+    ss << std::setw(3) << state["c_f"] << ", ";
+    ss << std::setw(3) << state["c_g"] << ", ";
+    ss << std::setw(3) << state["h"] << ", ";
+    ss << std::setw(3) << state["f.x"] << ", ";
+    ss << std::setw(3) << state["f.y"] << ", ";
+    ss << std::setw(3) << state["g.x"] << ", ";
+    ss << std::setw(3) << state["g.y"];
+
+    return ss.str();
 }
 
 
 std::ostream &operator<<(std::ostream &os, const State &state) {
     /* A function to print out a State object */
-    os << std::setw(3) << state["c_f"] << ", ";
-    os << std::setw(3) << state["c_g"] << ", ";
-    os << std::setw(3) << state["h"] << ", ";
-    os << std::setw(3) << state["f.x"] << ", ";
-    os << std::setw(3) << state["f.y"] << ", ";
-    os << std::setw(3) << state["g.x"] << ", ";
-    os << std::setw(3) << state["g.y"];
+    os << static_cast<std::string>(state);
     return os;
 }

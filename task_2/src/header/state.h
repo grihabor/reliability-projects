@@ -22,6 +22,8 @@ public:
     std::string &operator[](const std::string &field);
 
     bool operator<(const State &other) const;
+
+    operator std::string() const;
 };
 
 std::ostream &operator<<(std::ostream &os, const State &state);

@@ -8,9 +8,11 @@
 #include <set>
 #include <vector>
 #include <fstream>
+#include <sstream>
 #include "../header/state.h"
 #include "../header/assign.h"
 #include "../header/args.h"
+#include "../header/run.h"
 
 void print_info() {
     std::cout << std::string(80, '*') << std::endl;
@@ -23,44 +25,59 @@ void print_info() {
 }
 
 
-void next_state(State state,
+void next_state(State current_state,
                 std::set<State> &states,
                 const std::vector<Assign> &f_code,
                 uint c_f,
                 const std::vector<Assign> &g_code,
-                uint c_g) {
+                uint c_g,
+                const State& prev_state,
+                LinksSet& links,
+                const Assign& prev_assignment) {
 
     // Add state to state set
-    state["c_f"] = std::to_string(c_f);
-    state["c_g"] = std::to_string(c_g);
-    states.insert(state);
+    current_state["c_f"] = std::to_string(c_f);
+    current_state["c_g"] = std::to_string(c_g);
+    states.insert(current_state);
+
+    Link link = std::make_pair(prev_state, current_state);
+    links[link] = prev_assignment;
+
+    State saved_state = current_state;
 
     Assign assignment;
 
     if (c_f < f_code.size() - 1) {
         /* Choose to execute next operator of f function */
         assignment = f_code[c_f];
-        state[assignment.field] = assignment.value;
+        current_state[assignment.field] = assignment.value;
         next_state(
-                state, states,
+                current_state, states,
                 f_code, c_f + 1,
-                g_code, c_g
+                g_code, c_g,
+                saved_state,
+                links,
+                assignment
         );
     }
 
     if (c_g < g_code.size() - 1) {
         /* Choose to execute next operator of g function */
         assignment = g_code[c_g];
-        state[assignment.field] = assignment.value;
+        current_state[assignment.field] = assignment.value;
         next_state(
-                state, states,
+                current_state, states,
                 f_code, c_f,
-                g_code, c_g + 1
+                g_code, c_g + 1,
+                saved_state,
+                links,
+                assignment
         );
     }
 }
 
-std::set<State> calculate_states(int f_a, int f_b, int g_a, int g_b) {
+std::pair<StatesSet, LinksSet>
+calculate_states(int f_a, int f_b, int g_a, int g_b) {
 
     // Fill in the f function code
     std::vector<Assign> f_code;
@@ -82,11 +99,12 @@ std::set<State> calculate_states(int f_a, int f_b, int g_a, int g_b) {
     g_code.emplace_back();
 
     // Initialize states
-    std::set<State> states;
+    StatesSet states;
+    LinksSet links;
 
     const StateMapping initial_mapping = {
-            {"c_f", "#"},
-            {"c_g", "#"},
+            {"c_f", "0"},
+            {"c_g", "0"},
             {"h",   "#"},
             {"f.x", "#"},
             {"f.y", "#"},
@@ -94,12 +112,13 @@ std::set<State> calculate_states(int f_a, int f_b, int g_a, int g_b) {
             {"g.y", "#"}
     };
 
-    State state(initial_mapping);
+    State current_state(initial_mapping);
     // Recursively search for possible states
-    next_state(state, states,
-               f_code, 0, g_code, 0);
+    next_state(current_state, states,
+               f_code, 0, g_code, 0,
+               current_state, links, Assign("", ""));
     // Return found states
-    return states;
+    return std::make_pair(states, links);
 }
 
 
@@ -121,6 +140,53 @@ std::map<int, State> enumerate_states(std::set<State> states) {
     return mapping;
 };
 
+typedef std::map<std::string, int> IndexMapping;
+
+int get_index(const State& state, IndexMapping mapping) {
+    std::cout << state << std::endl;
+    std::string s = static_cast<std::string>(state);
+    return mapping.at(s);
+}
+
+void generate_dot(const std::string& filename,
+                  const StatesSet &states,
+                  const LinksSet &links) {
+    std::ofstream f(filename);
+    IndexMapping mapping;
+    int count = 0;
+
+    f << "digraph G {" << std::endl;
+
+    for (const State& state : states) {
+        /* Write nodes */
+        std::string state_str = state;
+        mapping[state_str] = count;
+        f << count << " " << "[label=\"" << state_str << "\"];" << std::endl;
+        ++count;
+    }
+
+    std::set<std::string> links_str;
+
+    for (std::pair<Link, Assign> pair : links) {
+        /* Write links */
+        Link link = pair.first;
+        Assign assign = pair.second;
+
+        std::stringstream ss;
+        ss << get_index(link.first, mapping) << " -> ";
+        ss << get_index(link.second, mapping);
+        ss << "[label=\"" << static_cast<std::string>(assign) << "\"];";
+
+        std::string link_str = ss.str();
+        links_str.insert(link_str);
+    }
+
+    for (const std::string & link_str: links_str) {
+        f << link_str << std::endl;
+    }
+
+    f << "}" << std::endl;
+}
 
 int run(Args args) {
     if (!args.ok) {
@@ -129,13 +195,19 @@ int run(Args args) {
         return 0;
     }
 
+
+    StatesSet states;
+    LinksSet links;
+
     // Recursively calculate set of states
-    std::set<State> states = calculate_states(
+    std::tie(states, links) = calculate_states(
             args.values[0],
             args.values[1],
             args.values[2],
             args.values[3]
     );
+
+    generate_dot(args.filename + ".dot", states, links);
 
     // Write states to file
     std::ofstream f(args.filename);

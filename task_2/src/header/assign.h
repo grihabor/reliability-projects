@@ -14,6 +14,8 @@ struct Assign {
     Assign(std::string field, std::string value);
 
     Assign();
+
+    operator std::string() const;
 };
 
 

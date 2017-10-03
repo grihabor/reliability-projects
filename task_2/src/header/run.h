@@ -13,19 +13,29 @@
 #include "args.h"
 #include "assign.h"
 
+
+
+typedef std::pair<State,State> Link;
+typedef std::set<State> StatesSet;
+typedef std::map<Link, Assign> LinksSet;
+
+
 // Print information about the program
 void print_info();
 
 // Recursive function to iterate trough all possible states
-void next_state(State state,
+void next_state(State current_state,
                 std::set<State> &states,
                 const std::vector<Assign> &f_code,
                 uint c_f,
                 const std::vector<Assign> &g_code,
-                uint c_g);
+                uint c_g,
+                const State& prev_state,
+                std::set<std::pair<State, State>>& links);
 
 // Calculate possible states from given params
-std::set<State> calculate_states(int f_a, int f_b, int g_a, int g_b);
+std::pair<StatesSet, LinksSet>
+calculate_states(int f_a, int f_b, int g_a, int g_b);
 
 // A function to print out a vector of State objects
 std::ostream &operator<<(std::ostream &os, const std::set<State> &states);
