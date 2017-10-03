@@ -1,3 +1,5 @@
 digraph f {
-
+0 [label=""]
+1 [label=""]
+2 [label=""]
 }
