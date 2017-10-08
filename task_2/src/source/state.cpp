@@ -6,7 +6,6 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
-#include "../header/state_mapping.h"
 #include "../header/state.h"
 
 State::State(StateMapping initial_mapping)

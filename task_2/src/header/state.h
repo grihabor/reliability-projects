@@ -6,7 +6,10 @@
 #define TASK_2_STATE_H
 
 
-#include "state_mapping.h"
+#include <map>
+#include <string>
+
+typedef std::map<std::string, std::string> StateMapping;
 
 class State {
     /* Class to store the program state*/
@@ -24,7 +27,7 @@ public:
     bool operator<(const State &other) const;
     bool operator!=(const State &other) const;
 
-    operator std::string() const;
+    explicit operator std::string() const;
 
     bool exists(const std::string &key) const;
 };

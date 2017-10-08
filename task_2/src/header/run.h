@@ -9,34 +9,22 @@
 #include <iostream>
 #include <set>
 #include <vector>
+#include <map>
 #include "state.h"
 #include "args.h"
 #include "assign.h"
+#include "typedefs.h"
 
-
-
-typedef std::set<State> StateSet;
-
-typedef std::pair<State, State> Link;
-typedef std::map<Link, Assign> LinkSet;
-
-typedef std::pair<StateSet, LinkSet> StateGraph;
-
-typedef std::vector<Assign> Code;
-typedef std::pair<Code, uint> CodeWithState;
 
 // Print information about the program
 void print_info();
 
 // Recursive function to iterate trough all possible states
-void next_state(State current_state,
-                std::set<State> &states,
-                const std::vector<Assign> &f_code,
-                uint c_f,
-                const std::vector<Assign> &g_code,
-                uint c_g,
-                const State& prev_state,
-                std::set<std::pair<State, State>>& links);
+void next_state(State,
+                const State&,
+                StateGraph &,
+                std::vector<CodeWithState> &,
+                const Assign&);
 
 // Calculate state graph from given params
 StateGraph

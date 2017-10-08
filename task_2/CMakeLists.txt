@@ -3,14 +3,13 @@ project(task_2)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES
+file(
+        GLOB SOURCE_FILES
         src/2017_420_borodin.cpp
-        src/header/assign.h
-        src/source/assign.cpp
-        src/header/state_mapping.h
-        src/header/state.h
-        src/source/state.cpp
-        src/header/args.h
-        src/source/args.cpp src/header/run.h src/source/run.cpp)
+        "src/header/init/*.h"
+        "src/source/init/*.cpp"
+        "src/header/*.h"
+        "src/source/*.cpp"
+)
 
-add_executable(task_2 ${SOURCE_FILES})
+add_executable(task_2 ${SOURCE_FILES} src/header/typedefs.h)

@@ -11,6 +11,9 @@ struct Args {
 
     // name of the file to write output to
     std::string states_filename;
+    // name of the file to write dot to
+    std::string lts_filename;
+
     // whether program should print count
     bool print_total_count;
     // values to feed into f and g
@@ -18,9 +21,6 @@ struct Args {
 
     // if format is valid
     bool ok;
-
-    // if you should generate lts
-    std::string lts_filename;
 
     Args();
 

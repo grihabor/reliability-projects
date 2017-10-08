@@ -71,7 +71,8 @@ Args parse_args(int argc, char **argv) {
 }
 
 Args::Args()
-        : states_filename(std::string("states.txt")),
+        : states_filename("states.txt"),
+          lts_filename("lts_all.txt"),
           print_total_count(false),
           values{0, 0, 0, 0},
           ok(false) {}
