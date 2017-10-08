@@ -15,10 +15,15 @@
 
 
 
-typedef std::pair<State,State> Link;
-typedef std::set<State> StatesSet;
-typedef std::map<Link, Assign> LinksSet;
+typedef std::set<State> StateSet;
 
+typedef std::pair<State, State> Link;
+typedef std::map<Link, Assign> LinkSet;
+
+typedef std::pair<StateSet, LinkSet> StateGraph;
+
+typedef std::vector<Assign> Code;
+typedef std::pair<Code, uint> CodeWithState;
 
 // Print information about the program
 void print_info();
@@ -33,14 +38,14 @@ void next_state(State current_state,
                 const State& prev_state,
                 std::set<std::pair<State, State>>& links);
 
-// Calculate possible states from given params
-std::pair<StatesSet, LinksSet>
+// Calculate state graph from given params
+StateGraph
 calculate_states(int f_a, int f_b, int g_a, int g_b);
 
 // A function to print out a vector of State objects
-std::ostream &operator<<(std::ostream &os, const std::set<State> &states);
+std::ostream &operator<<(std::ostream &os, const StateSet &states);
 
 // Main logic
-int run(Args args);
+int run(const Args &args);
 
 #endif //TASK_2_RUN_H

@@ -10,8 +10,8 @@ Assign::Assign(std::string field, std::string value)
           value(std::move(value)) {}
 
 Assign::Assign()
-        : field(std::string("")),
-          value(std::string("")) {}
+        : field(""),
+          value("") {}
 
 Assign::operator std::string() const {
     std::stringstream ss;

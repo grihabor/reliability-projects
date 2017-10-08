@@ -15,7 +15,7 @@ struct Assign {
 
     Assign();
 
-    operator std::string() const;
+    explicit operator std::string() const;
 };
 
 

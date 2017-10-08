@@ -25,26 +25,43 @@ void print_info() {
 }
 
 
+void maybe_store_state_and_link(const State &current_state,
+                                const State &prev_state,
+                                StateSet &states,
+                                LinkSet &links,
+                                const Assign &assingment) {
+    /* Store state and link if not initial state */
+    if (current_state != prev_state) {
+        /* If not initial state */
+        // Store current state
+        states.insert(current_state);
+
+        // Store link from previous to current state
+        Link link = std::make_pair(prev_state, current_state);
+        links[link] = assingment;
+    }
+}
+
 void next_state(State current_state,
-                std::set<State> &states,
-                const std::vector<Assign> &f_code,
+                StateSet &states,
+                const Code &f_code,
                 uint c_f,
-                const std::vector<Assign> &g_code,
+                const Code &g_code,
                 uint c_g,
                 const State& prev_state,
-                LinksSet& links,
+                LinkSet& links,
                 const Assign& prev_assignment) {
 
-    // Add state to state set
+    // Set state counters
     current_state["c_f"] = std::to_string(c_f);
     current_state["c_g"] = std::to_string(c_g);
-    states.insert(current_state);
+    maybe_store_state_and_link(
+            current_state, prev_state,
+            states, links,
+            prev_assignment
+    );
 
-    Link link = std::make_pair(prev_state, current_state);
-    links[link] = prev_assignment;
-
-    State saved_state = current_state;
-
+    State next_prev_state = current_state;
     Assign assignment;
 
     if (c_f < f_code.size() - 1) {
@@ -55,7 +72,7 @@ void next_state(State current_state,
                 current_state, states,
                 f_code, c_f + 1,
                 g_code, c_g,
-                saved_state,
+                next_prev_state,
                 links,
                 assignment
         );
@@ -69,7 +86,7 @@ void next_state(State current_state,
                 current_state, states,
                 f_code, c_f,
                 g_code, c_g + 1,
-                saved_state,
+                next_prev_state,
                 links,
                 assignment
         );
@@ -90,6 +107,16 @@ std::vector<Assign> generate_f_code() {
     return f_code;
 }
 
+std::vector<Assign> generate_f_code_h_only() {
+
+    // Fill in the f function code
+    std::vector<Assign> f_code;
+    f_code.emplace_back("h", "3");
+    f_code.emplace_back();
+
+    return f_code;
+}
+
 std::vector<Assign> generate_g_code(int g_b) {
     // Fill in the g function code
     std::vector<Assign> g_code;
@@ -104,15 +131,17 @@ std::vector<Assign> generate_g_code(int g_b) {
     return g_code;
 }
 
-std::pair<StatesSet, LinksSet>
-calculate_states(int f_a, int f_b, int g_a, int g_b) {
+std::vector<Assign> generate_g_code_h_code(int g_b) {
+    // Fill in the g function code
+    std::vector<Assign> g_code;
+    g_code.emplace_back("h", std::to_string(g_b));
+    g_code.emplace_back("h", "4");
+    g_code.emplace_back();
 
-    auto f_code = generate_f_code();
-    auto g_code = generate_g_code(g_b);
+    return g_code;
+}
 
-    // Initialize states
-    StatesSet states;
-    LinksSet links;
+StateMapping generate_initial_mapping() {
 
     const StateMapping initial_mapping = {
             {"c_f", "0"},
@@ -123,6 +152,34 @@ calculate_states(int f_a, int f_b, int g_a, int g_b) {
             {"g.x", "#"},
             {"g.y", "#"}
     };
+    return initial_mapping;
+}
+
+
+StateMapping generate_initial_mapping_h_only() {
+
+    const StateMapping initial_mapping = {
+            {"c_f", "0"},
+            {"c_g", "0"},
+            {"h",   "#"},
+    };
+    return initial_mapping;
+}
+
+
+
+
+StateGraph
+calculate_states(int f_a, int f_b, int g_a, int g_b) {
+
+    auto f_code = generate_f_code();
+    auto g_code = generate_g_code(g_b);
+
+    StateMapping initial_mapping = generate_initial_mapping();
+
+    // Initialize states
+    StateSet states;
+    LinkSet links;
 
     State current_state(initial_mapping);
     // Recursively search for possible states
@@ -142,15 +199,6 @@ std::ostream &operator<<(std::ostream &os, const std::set<State> &states) {
     return os;
 }
 
-std::map<int, State> enumerate_states(std::set<State> states) {
-    std::map<int, State> mapping;
-    int counter = 0;
-    for (const State &state: states) {
-        mapping.insert(std::make_pair(counter, state));
-        ++counter;
-    }
-    return mapping;
-};
 
 typedef std::map<std::string, int> IndexMapping;
 
@@ -160,8 +208,8 @@ int get_index(const State& state, IndexMapping mapping) {
 }
 
 void generate_dot(const std::string& filename,
-                  const StatesSet &states,
-                  const LinksSet &links) {
+                  const StateSet &states,
+                  const LinkSet &links) {
     std::ofstream f(filename);
     IndexMapping mapping;
     int count = 0;
@@ -199,15 +247,15 @@ void generate_dot(const std::string& filename,
     f << "}" << std::endl;
 }
 
-int run(Args args) {
+int run(const Args &args) {
     if (!args.ok) {
         /* too few args */
         print_info();
         return 0;
     }
 
-    StatesSet states;
-    LinksSet links;
+    StateSet states;
+    LinkSet links;
 
     // Recursively calculate set of states
     std::tie(states, links) = calculate_states(
@@ -217,10 +265,10 @@ int run(Args args) {
             args.values[3]
     );
 
-    generate_dot(args.filename + ".dot", states, links);
+    generate_dot(args.states_filename + ".dot", states, links);
 
     // Write states to file
-    std::ofstream f(args.filename);
+    std::ofstream f(args.states_filename);
     f << states;
 
     // Write count to stdout

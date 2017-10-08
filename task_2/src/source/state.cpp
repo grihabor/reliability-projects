@@ -47,6 +47,17 @@ State::operator std::string() const {
     return ss.str();
 }
 
+bool State::exists(const std::string &key) const {
+    /*  */
+    const auto mapping = this->mapping;
+    return mapping.find(key) != mapping.end();
+}
+
+bool State::operator!=(const State &other) const {
+    const State &self = *this;
+    return self < other || other < self;
+}
+
 
 std::ostream &operator<<(std::ostream &os, const State &state) {
     /* A function to print out a State object */

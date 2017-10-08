@@ -10,7 +10,7 @@ struct Args {
     /* Struct to store command line arguments */
 
     // name of the file to write output to
-    std::string filename;
+    std::string states_filename;
     // whether program should print count
     bool print_total_count;
     // values to feed into f and g
@@ -20,7 +20,7 @@ struct Args {
     bool ok;
 
     // if you should generate lts
-    bool lts;
+    std::string lts_filename;
 
     Args();
 

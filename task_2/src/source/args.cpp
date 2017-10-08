@@ -28,13 +28,19 @@ Args parse_args(int argc, char **argv) {
             /* handle file parameter */
             // read next param
             ++i;
-            // store it in `filename` field
-            args.filename = argv[i];
+            // store it in `states_filename` field
+            args.states_filename = argv[i];
         } else if (arg == "-count") {
             /* handle count parameter */
             args.print_total_count = true;
+        } else if (arg == "-lts") {
+            /* handle lts parameter */
+            // read next param
+            ++i;
+            // store it in `lts_filename` field
+            args.lts_filename = argv[i];
         } else {
-            /* handle value */
+            /* handle values a, b, a, b */
 
             if (count >= 4) {
                 /* too many values */
@@ -65,7 +71,7 @@ Args parse_args(int argc, char **argv) {
 }
 
 Args::Args()
-        : filename(std::string("states.txt")),
+        : states_filename(std::string("states.txt")),
           print_total_count(false),
           values{0, 0, 0, 0},
           ok(false) {}

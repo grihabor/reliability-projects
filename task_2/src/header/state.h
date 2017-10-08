@@ -22,8 +22,11 @@ public:
     std::string &operator[](const std::string &field);
 
     bool operator<(const State &other) const;
+    bool operator!=(const State &other) const;
 
     operator std::string() const;
+
+    bool exists(const std::string &key) const;
 };
 
 std::ostream &operator<<(std::ostream &os, const State &state);
