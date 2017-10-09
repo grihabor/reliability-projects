@@ -4,7 +4,6 @@
 
 
 #include "../../header/init/state.h"
-#include "../../header/state.h"
 
 State get_initial_state() {
 

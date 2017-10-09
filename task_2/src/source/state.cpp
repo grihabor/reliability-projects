@@ -8,6 +8,8 @@
 #include <sstream>
 #include "../header/state.h"
 
+bool State::abstract = false;
+
 State::State(StateMapping initial_mapping)
         : mapping(std::move(initial_mapping)) {/* Constructor */}
 
@@ -35,14 +37,17 @@ State::operator std::string() const {
     std::stringstream ss;
     const State& state = *this;
 
-    ss << std::setw(3) << state["c_f"] << ", ";
-    ss << std::setw(3) << state["c_g"] << ", ";
+    if (!state.abstract) {
+        ss << std::setw(3) << state["c_f"] << ", ";
+        ss << std::setw(3) << state["c_g"] << ", ";
+    }
     ss << std::setw(3) << state["h"] << ", ";
-    ss << std::setw(3) << state["f.x"] << ", ";
-    ss << std::setw(3) << state["f.y"] << ", ";
-    ss << std::setw(3) << state["g.x"] << ", ";
-    ss << std::setw(3) << state["g.y"];
-
+    if (!state.abstract) {
+        ss << std::setw(3) << state["f.x"] << ", ";
+        ss << std::setw(3) << state["f.y"] << ", ";
+        ss << std::setw(3) << state["g.x"] << ", ";
+        ss << std::setw(3) << state["g.y"];
+    }
     return ss.str();
 }
 

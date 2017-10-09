@@ -14,6 +14,9 @@ struct Args {
     // name of the file to write dot to
     std::string lts_filename;
 
+    // if you should use only h
+    bool abstract;
+
     // whether program should print count
     bool print_total_count;
     // values to feed into f and g

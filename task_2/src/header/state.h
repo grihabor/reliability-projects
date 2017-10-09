@@ -18,7 +18,10 @@ private:
     StateMapping mapping;
 
 public:
+    static bool abstract;
+
     explicit State(StateMapping initial_mapping);
+    State(){}
 
     std::string operator[](const std::string &field) const;
 

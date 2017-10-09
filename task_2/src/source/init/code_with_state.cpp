@@ -13,3 +13,11 @@ CodeWithState get_f_code_with_state() {
 CodeWithState get_g_code_with_state(int b) {
     return CodeWithState(get_g_code(b), 0);
 }
+
+CodeWithState get_f_code_with_state_h_only() {
+    return CodeWithState(get_f_code_h_only(), 0);
+}
+
+CodeWithState get_g_code_with_state_h_only(int b) {
+    return CodeWithState(get_g_code_h_only(b), 0);
+}

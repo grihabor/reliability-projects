@@ -10,4 +10,7 @@
 CodeWithState get_f_code_with_state();
 CodeWithState get_g_code_with_state(int b);
 
+CodeWithState get_f_code_with_state_h_only();
+CodeWithState get_g_code_with_state_h_only(int b);
+
 #endif //TASK_2_INIT_CODE_WITH_STATE_H

@@ -39,6 +39,8 @@ Args parse_args(int argc, char **argv) {
             ++i;
             // store it in `lts_filename` field
             args.lts_filename = argv[i];
+        } else if (arg == "-abstract") {
+            args.abstract = true;
         } else {
             /* handle values a, b, a, b */
 
@@ -73,6 +75,7 @@ Args parse_args(int argc, char **argv) {
 Args::Args()
         : states_filename("states.txt"),
           lts_filename("lts_all.txt"),
+          abstract(false),
           print_total_count(false),
           values{0, 0, 0, 0},
           ok(false) {}

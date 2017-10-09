@@ -28,7 +28,7 @@ void next_state(State,
 
 // Calculate state graph from given params
 StateGraph
-calculate_states(int f_a, int f_b, int g_a, int g_b);
+calculate_states(int f_a, int f_b, int g_a, int g_b, bool);
 
 // A function to print out a vector of State objects
 std::ostream &operator<<(std::ostream &os, const StateSet &states);

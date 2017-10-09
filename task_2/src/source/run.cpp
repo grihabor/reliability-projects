@@ -101,16 +101,24 @@ void next_state(State current_state,
 
 
 StateGraph
-calculate_states(int f_a, int f_b, int g_a, int g_b) {
+calculate_states(int f_a, int f_b, int g_a, int g_b, bool abstract) {
 
-    std::vector<CodeWithState> functions = {
-        get_f_code_with_state(),
-        get_g_code_with_state(g_b)
-    };
+    std::vector<CodeWithState> functions;
+    State current_state;
+    if (abstract) {
+        current_state = get_initial_state_h_only();
+        functions.push_back(get_f_code_with_state_h_only());
+        functions.push_back(get_g_code_with_state_h_only(g_b));
+    } else {
+        current_state = get_initial_state();
+        functions.push_back(get_f_code_with_state());
+        functions.push_back(get_g_code_with_state(g_b));
+    }
+
 
     StateGraph graph;
 
-    State current_state = get_initial_state();
+
     // Recursively search for possible states
     next_state(current_state,
                current_state,
@@ -137,13 +145,15 @@ int run(const Args &args) {
         print_info();
         return 0;
     }
+    State().abstract = args.abstract;
 
     // Recursively calculate set of states
     StateGraph graph = calculate_states(
             args.values[0],
             args.values[1],
             args.values[2],
-            args.values[3]
+            args.values[3],
+            args.abstract
     );
 
     {

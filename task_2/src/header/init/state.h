@@ -9,5 +9,6 @@
 #include "../state.h"
 
 State get_initial_state();
+State get_initial_state_h_only();
 
 #endif //TASK_2_INIT_STATE_H
