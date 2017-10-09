@@ -1,0 +1,5 @@
+uppaal*
+.idea
+cmake-build-debug
+build
+*.png
