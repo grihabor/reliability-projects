@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_1.dtd'><nta><declaration>// Place global declarations here.
+
+typedef int[0, 1] flag_type;
+typedef int[0, 2] cpu_id_type;
+typedef int[0, 9] task_id_type;
+typedef int[0, 13] delay_type;
+
+flag_type task_is_finished[10] = {1, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+flag_type cpu_died;
+
+cpu_id_type cpu_ids[10];
+
+typedef int[0, 27] time_type;
+time_type time = 0;
+
+typedef int[0, 27] skip_count_type;
+skip_count_type skip_count = 0;
+
+broadcast chan tick;
+urgent chan restart_task;
+urgent chan run_test;
+
+task_id_type tasks_in_progress [3] = {0, 0, 0};
+delay_type time_left[3] = {0, 0, 0};
+urgent chan use_cpu[3];
+</declaration><template><name>Timer</name><location id="id0" x="-484" y="-136"></location><init ref="id0"/><transition><source ref="id0"/><target ref="id0"/><label kind="guard" x="-560" y="-208">((tasks_in_progress[0] != 0) || (tasks_in_progress[1] != 0) || (tasks_in_progress[2] != 0)) &amp;&amp; (cpu_died || time != 15) &amp;&amp; (time &lt; 25)</label><label kind="synchronisation" x="-382" y="-153">tick!</label><label kind="assignment" x="-382" y="-136">time += 1</label><nail x="-391" y="-85"/><nail x="-391" y="-187"/></transition></template><template><name>Task</name><parameter>task_id_type task_id, task_id_type depend_1, task_id_type depend_2, delay_type delay_0, delay_type delay_1, delay_type delay_2</parameter><location id="id1" x="576" y="-112"><name x="566" y="-142">Finished</name></location><location id="id2" x="144" y="-127"><name x="168" y="-120">In_progress</name></location><location id="id3" x="-518" y="-127"><name x="-584" y="-160">Scheduled</name></location><init ref="id3"/><transition><source ref="id2"/><target ref="id2"/><label kind="guard" x="168" y="32">time_left[cpu_ids[task_id]] &gt; 1</label><label kind="synchronisation" x="200" y="56">tick?</label><label kind="assignment" x="176" y="80">time_left[cpu_ids[task_id]] -= 1</label><nail x="288" y="56"/><nail x="144" y="56"/></transition><transition><source ref="id2"/><target ref="id1"/><label kind="guard" x="360" y="-144">time_left[cpu_ids[task_id]] == 1</label><label kind="synchronisation" x="392" y="-112">tick?</label><label kind="assignment" x="352" y="-88">time_left[cpu_ids[task_id]] = 0,
+task_is_finished[task_id] = 1,
+tasks_in_progress[cpu_ids[task_id]] = 0</label></transition><transition><source ref="id2"/><target ref="id2"/><label kind="guard" x="216" y="-248">cpu_ids[task_id] == 0</label><label kind="synchronisation" x="224" y="-224">restart_task?</label><label kind="assignment" x="224" y="-200">time_left[0] = delay_0</label><nail x="200" y="-232"/><nail x="224" y="-200"/></transition><transition><source ref="id3"/><target ref="id2"/><label kind="guard" x="-664" y="88">(task_is_finished[depend_1]&gt;0)  and (task_is_finished[depend_2]&gt;0) and (tasks_in_progress[2] == 0)</label><label kind="synchronisation" x="-336" y="144">use_cpu[2]!</label><label kind="assignment" x="-224" y="128">time_left[2] = delay_2,
+tasks_in_progress[2]=task_id,
+cpu_ids[task_id] = 2</label><nail x="-416" y="56"/><nail x="8" y="56"/></transition><transition><source ref="id3"/><target ref="id2"/><label kind="guard" x="-576" y="-272">(task_is_finished[depend_1]&gt;0)  and (task_is_finished[depend_2]&gt;0) and (tasks_in_progress[0] == 0)</label><label kind="synchronisation" x="-352" y="-224">use_cpu[0]!</label><label kind="assignment" x="-256" y="-232">time_left[0] = delay_0,
+tasks_in_progress[0]=task_id,
+cpu_ids[task_id] = 0</label><nail x="-382" y="-238"/><nail x="-8" y="-238"/></transition><transition><source ref="id3"/><target ref="id2"/><label kind="guard" x="-648" y="-104">(task_is_finished[depend_1]&gt;0)  and (task_is_finished[depend_2]&gt;0) and (tasks_in_progress[1] == 0)</label><label kind="synchronisation" x="-400" y="-64">use_cpu[1]!</label><label kind="assignment" x="-296" y="-72">time_left[1] = delay_1,
+tasks_in_progress[1]=task_id,
+cpu_ids[task_id] = 1</label></transition></template><template><name x="5" y="5">CPU</name><parameter>cpu_id_type cpu_id</parameter><location id="id4" x="-536" y="-712"></location><location id="id5" x="-248" y="-360"></location><init ref="id5"/><transition><source ref="id5"/><target ref="id5"/><label kind="guard" x="-48" y="-496">tasks_in_progress[0] == 0 and cpu_id == 0 and time == 15 and !cpu_died</label><label kind="assignment" x="-16" y="-472">cpu_died = 1</label><nail x="-88" y="-520"/><nail x="-32" y="-448"/></transition><transition><source ref="id5"/><target ref="id4"/><label kind="guard" x="-752" y="-656">cpu_id == 0 and forall(i:task_id_type) task_is_finished[i] == 1</label><label kind="synchronisation" x="-430" y="-596">run_test!</label></transition><transition><source ref="id5"/><target ref="id5"/><label kind="guard" x="-628" y="-414">tasks_in_progress[cpu_id] == 0</label><label kind="synchronisation" x="-556" y="-382">use_cpu[cpu_id]?</label><nail x="-396" y="-430"/><nail x="-396" y="-334"/></transition><transition><source ref="id5"/><target ref="id5"/><label kind="guard" x="56" y="-288">tasks_in_progress[cpu_id] &gt; 0</label><label kind="synchronisation" x="56" y="-264">tick?</label><nail x="40" y="-328"/><nail x="40" y="-216"/></transition><transition><source ref="id5"/><target ref="id5"/><label kind="guard" x="-292" y="-572">time == 15 and cpu_id == 0 and !cpu_died</label><label kind="synchronisation" x="-292" y="-540">restart_task!</label><label kind="assignment" x="-292" y="-518">cpu_died = 1</label><nail x="-308" y="-548"/><nail x="-180" y="-548"/></transition><transition><source ref="id5"/><target ref="id5"/><label kind="guard" x="-340" y="-278">(tasks_in_progress[cpu_id] == 0) and (skip_count &lt; 25)</label><label kind="synchronisation" x="-260" y="-254">tick?</label><label kind="assignment" x="-316" y="-230">skip_count += 1</label><nail x="-284" y="-238"/><nail x="-204" y="-238"/></transition></template><template><name>Test</name><location id="id6" x="-328" y="-64"><name x="-338" y="-94">Finished</name></location><location id="id7" x="8" y="8"><name x="-10" y="-30">Started</name></location><init ref="id7"/><transition><source ref="id7"/><target ref="id6"/><label kind="synchronisation" x="-208" y="-64">run_test?</label><label kind="assignment" x="-220" y="-28">time += 2</label></transition></template><system>// Place template instantiations here.
+
+timer = Timer();
+
+cpu_1 = CPU(0);
+cpu_2 = CPU(1);
+cpu_3 = CPU(2);
+
+task_A = Task(1, 0, 0, 4, 2, 6);
+task_B = Task(2, 0, 0, 4, 3, 4);
+task_C = Task(3, 1, 0, 8, 6, 3);
+task_D = Task(4, 1, 2, 6, 2, 9);
+task_E = Task(5, 3, 0, 9, 8, 8);
+task_F = Task(6, 4, 0, 8, 7, 8);
+task_G = Task(7, 3, 4, 12, 13, 8);
+task_H = Task(8, 5, 7, 1, 2, 2);
+task_I = Task(9, 7, 0, 6, 7, 7);
+
+test = Test();
+
+// List one or more processes to be composed into a system.
+system timer, 
+    cpu_1, 
+    cpu_2, 
+    cpu_3, 
+    task_A, 
+    task_B, 
+    task_C, 
+    task_D, 
+    task_E, 
+    task_F,  
+    task_G, 
+    task_H, 
+    task_I,
+    test;
+    </system></nta>
