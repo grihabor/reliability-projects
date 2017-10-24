@@ -1,0 +1,26 @@
+*** Пункт 1 ***
+
+min_delay - 17
+Скорость работы практически не отличается при обходе в глубину, в ширину или случайно.
+
+Логи проверки
+--------
+E<> skip_count <= 16 and forall(i:task_id_type) task_is_finished[i] == 1
+Property is not satisfied.
+E<> skip_count <= 17 and forall(i:task_id_type) task_is_finished[i] == 1
+Property is satisfied.
+--------
+
+
+*** Пункт 3 ***
+
+min_delay - 16
+Скорость работы практически не отличается при обходе в глубину, в ширину или случайно.
+
+Логи проверки
+--------
+E<> skip_count <= 15 and forall(i:task_id_type) task_is_finished[i] == 1
+Property is not satisfied.
+E<> skip_count <= 16 and forall(i:task_id_type) task_is_finished[i] == 1
+Property is satisfied.
+--------
