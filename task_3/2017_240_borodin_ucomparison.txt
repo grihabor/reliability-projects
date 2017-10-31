@@ -10,6 +10,24 @@ Property is not satisfied.
 E<> skip_count <= 17 and forall(i:task_id_type) task_is_finished[i] == 1
 Property is satisfied.
 --------
+B -> cpu_0
+A -> cpu_1
+A finish
+C -> cpu_2
+B finish
+D -> cpu_1
+C finish
+D finish
+E -> cpu_0
+F -> cpu_1
+G -> cpu_2
+E finish
+G finish
+I -> cpu_0
+H -> cpu_1
+H finish
+F finish
+I finish
 
 
 *** Пункт 3 ***
@@ -24,3 +42,23 @@ Property is not satisfied.
 E<> skip_count <= 16 and forall(i:task_id_type) task_is_finished[i] == 1
 Property is satisfied.
 --------
+B -> cpu_0
+A -> cpu_1
+A finish
+C -> cpu_2
+B finish
+D -> cpu_1
+C finish
+D finish
+E -> cpu_1
+G -> cpu_2
+F -> cpu_0
+E finish
+G finish
+G test -> cpu_2
+G test finish
+H -> cpu_1
+I -> cpu_2
+H finish
+F finish
+I finish
