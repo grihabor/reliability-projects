@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_1.dtd'><nta><declaration>// Place global declarations here.
+
+typedef int[0, 1] flag_type;
+typedef int[0, 2] cpu_id_type;
+typedef int[0, 9] task_id_type;
+typedef int[0, 13] delay_type;
+
+flag_type task_is_finished[10] = {1, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+urgent chan use_cpu[3];
+
+delay_type task_process_time[3] = {0, 0, 0};
+
+int time = 0;
+int skip_count = 0;
+broadcast chan tick;
+
+// Task ids in progress on each CPU
+task_id_type tasks_in_progress [3] = {0, 0, 0};
+</declaration><template><name>Timer</name><location id="id0" x="-484" y="-136"></location><init ref="id0"/><transition><source ref="id0"/><target ref="id0"/><label kind="guard" x="-382" y="-170">(task_process_time[0] &gt; 0) || (task_process_time[1] &gt; 0) || (task_process_time[2] &gt; 0)</label><label kind="synchronisation" x="-382" y="-153">tick!</label><label kind="assignment" x="-382" y="-136">time++</label><nail x="-391" y="-85"/><nail x="-391" y="-187"/></transition></template><template><name>Task</name><parameter>task_id_type task_id, task_id_type depend_1, task_id_type depend_2, delay_type delay_0, delay_type delay_1, delay_type delay_2</parameter><location id="id1" x="144" y="-127"><name x="118" y="-110">Finished</name></location><location id="id2" x="-518" y="-127"><name x="-528" y="-157">Scheduled</name></location><init ref="id2"/><transition><source ref="id2"/><target ref="id1"/><label kind="guard" x="-391" y="-34">(task_is_finished[depend_1]&gt;0)  and (task_is_finished[depend_2]&gt;0)</label><label kind="synchronisation" x="-255" y="0">use_cpu[2]!</label><label kind="assignment" x="-280" y="25">task_process_time[2] = delay_2,
+tasks_in_progress[2]=task_id</label><nail x="-382" y="-8"/><nail x="-8" y="-8"/></transition><transition><source ref="id2"/><target ref="id1"/><label kind="guard" x="-357" y="-229">(task_is_finished[depend_1]&gt;0)  and (task_is_finished[depend_2]&gt;0)</label><label kind="synchronisation" x="-229" y="-263">use_cpu[0]!</label><label kind="assignment" x="-272" y="-323">task_process_time[0] = delay_0,
+tasks_in_progress[0]=task_id</label><nail x="-382" y="-238"/><nail x="-8" y="-238"/></transition><transition><source ref="id2"/><target ref="id1"/><label kind="guard" x="-365" y="-170">(task_is_finished[depend_1]&gt;0)  and (task_is_finished[depend_2]&gt;0)</label><label kind="synchronisation" x="-246" y="-144">use_cpu[1]!</label><label kind="assignment" x="-306" y="-119">task_process_time[1] = delay_1,
+tasks_in_progress[1]=task_id</label></transition></template><template><name x="5" y="5">CPU</name><parameter>cpu_id_type cpu_id</parameter><declaration>// Place local declarations here.
+
+
+void process_task() {
+    if (task_process_time[cpu_id] == 1)
+    {
+        task_is_finished[tasks_in_progress[cpu_id]] = 1;
+    }
+    task_process_time[cpu_id] = task_process_time[cpu_id] - 1;
+}
+</declaration><location id="id3" x="-204" y="-450"></location><init ref="id3"/><transition><source ref="id3"/><target ref="id3"/><label kind="guard" x="-296" y="-368">task_process_time[cpu_id] == 0</label><label kind="synchronisation" x="-216" y="-344">tick?</label><label kind="assignment" x="-272" y="-320">skip_count += 1</label><nail x="-240" y="-328"/><nail x="-160" y="-328"/></transition><transition><source ref="id3"/><target ref="id3"/><label kind="guard" x="-472" y="-488">task_process_time[cpu_id]&gt;0</label><label kind="synchronisation" x="-408" y="-464">tick?</label><label kind="assignment" x="-448" y="-440">process_task()</label><nail x="-408" y="-520"/><nail x="-408" y="-520"/><nail x="-408" y="-400"/><nail x="-408" y="-400"/><nail x="-408" y="-400"/></transition><transition><source ref="id3"/><target ref="id3"/><label kind="guard" x="-144" y="-480">task_process_time[cpu_id] == 0</label><label kind="synchronisation" x="-96" y="-456">use_cpu[cpu_id]?</label><nail x="0" y="-520"/><nail x="0" y="-512"/><nail x="0" y="-518"/><nail x="0" y="-400"/></transition></template><system>// Place template instantiations here.
+
+timer = Timer();
+
+cpu_1 = CPU(0);
+cpu_2 = CPU(1);
+cpu_3 = CPU(2);
+
+task_A = Task(1, 0, 0, 4, 2, 6);
+task_B = Task(2, 0, 0, 4, 3, 4);
+task_C = Task(3, 1, 0, 8, 6, 3);
+task_D = Task(4, 1, 2, 6, 2, 9);
+task_E = Task(5, 3, 0, 9, 8, 8);
+task_F = Task(6, 4, 0, 8, 7, 8);
+task_G = Task(7, 3, 4, 12, 13, 8);
+task_H = Task(8, 5, 7, 1, 2, 2);
+task_I = Task(9, 7, 0, 6, 7, 7);
+
+
+// List one or more processes to be composed into a system.
+system timer, 
+    cpu_1, 
+    cpu_2, 
+    cpu_3, 
+    task_A, 
+    task_B, 
+    task_C, 
+    task_D, 
+    task_E, 
+    task_F,  
+    task_G, 
+    task_H, 
+    task_I;
+    </system></nta>
