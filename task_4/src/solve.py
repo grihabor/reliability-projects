@@ -3,9 +3,13 @@ from utils import FILE_INPUT_XML
 from structure import Sample
 
 
-def _increment_state(state, modules, module_index):
+def _increment_state(state, modules, module_index, zero_tail=True):
     if module_index < 0:
         return False
+
+    if zero_tail:
+        for index in range(module_index + 1, len(state)):
+            state[index] = 0
 
     module = modules[module_index]
 
@@ -14,7 +18,7 @@ def _increment_state(state, modules, module_index):
         return True
 
     state[module_index] = 0
-    return _increment_state(state, modules, module_index - 1)
+    return _increment_state(state, modules, module_index - 1, zero_tail=False)
 
 
 def _calc_cost(state, modules, max_cost, max_reliability):
