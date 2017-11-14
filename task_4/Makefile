@@ -8,7 +8,7 @@ docs:
 	docker run -it \
 		-v "$(DOCS):/docs" \
 		$(IMAGE) \
-		sh -c "cd /docs; make latexpdf"
+		sh -c "cd /docs; make html"
 
 pull:
 	docker pull $(IMAGE)
@@ -17,7 +17,7 @@ push:
 	docker push $(IMAGE)
 
 build:
-	docker build . \
+	docker build docker/docs \
 		-t $(IMAGE)
 
 .PHONY: all docs
