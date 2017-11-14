@@ -1,2 +1,2 @@
+from .generation import generate_sample
 from .args import Args
-from .xml_generation import generate_xml

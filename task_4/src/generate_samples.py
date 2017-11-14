@@ -1,6 +1,7 @@
 import sys
+from xml.etree.ElementTree import ElementTree
 
-from sample_generation import generate_xml, Args
+from sample_generation import generate_sample, Args
 from utils import FILE_INPUT_XML
 
 
@@ -30,7 +31,10 @@ def initialize_args():
 
 def main():
     args = initialize_args()
-    generate_xml(args)
+    sample = generate_sample(args.module_count, args.variant_count)
+    xml_obj = sample.to_xml()
+    et = ElementTree(xml_obj)
+    et.write(args.xml_path)
 
 
 if __name__ == '__main__':		
