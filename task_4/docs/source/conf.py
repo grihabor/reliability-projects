@@ -133,6 +133,12 @@ latex_elements = {
     # Latex figure (float) alignment
     #
     # 'figure_align': 'htbp',
+
+    # 'fontpkg': '\\usepackage{fos}',
+    'preamble': '\n'.join([
+        '\\usepackage[utf8]{inputenc}',
+        '\\usepackage[russian]{babel}',
+    ]),
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
