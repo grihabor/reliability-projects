@@ -7,3 +7,4 @@ DIR_DATA = os.path.join(DIR_PROJECT, 'data')
 os.makedirs(DIR_DATA, exist_ok=True)
 
 FILE_INPUT_XML = os.path.join(DIR_DATA, 'input.xml')
+FILE_RESULTS_CSV = os.path.join(DIR_DATA, 'results.csv')

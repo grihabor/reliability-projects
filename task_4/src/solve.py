@@ -17,13 +17,15 @@ def _increment_state(state, modules, module_index):
     return _increment_state(state, modules, module_index - 1)
 
 
-def _calc_cost(state, modules, max_cost):
+def _calc_cost(state, modules, max_cost, max_reliability):
     cost = 0
-    reliability = 0.
+    reliability = 1.
     for i, (variant_index, module) in enumerate(zip(state, modules)):
         cost += module.variants[variant_index].cost
-        reliability += module.variants[variant_index].reliability
+        reliability *= module.variants[variant_index].reliability
         if cost > max_cost:
+            return dict(cost=None, index=i)
+        if reliability < max_reliability:
             return dict(cost=None, index=i)
     return dict(cost=cost, reliability=reliability)
 
@@ -36,11 +38,12 @@ def find_best_solution(sample: Sample):
     state = [0 for _ in sample.modules]
     best_state = dict(
         state=list(state),
-        reliability=0,
+        reliability=0.,
+        cost=None,
     )
 
     while True:
-        result = _calc_cost(state, modules, sample.max_cost)
+        result = _calc_cost(state, modules, sample.max_cost, best_state['reliability'])
         if result['cost'] is None:
             reduce_count += 1
             index = result['index']
@@ -54,6 +57,7 @@ def find_best_solution(sample: Sample):
             best_state = dict(
                 state=list(state),
                 reliability=reliability,
+                cost=result['cost']
             )
 
         ok = _increment_state(state, modules, len(modules) - 1)

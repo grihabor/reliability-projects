@@ -11,5 +11,6 @@ Welcome to Reliability Projects's documentation!
    :caption: Contents:
 
    task_description
+   algorithm
 
 
