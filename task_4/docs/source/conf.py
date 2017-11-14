@@ -135,19 +135,22 @@ latex_elements = {
     # 'figure_align': 'htbp',
 
     # 'fontpkg': '\\usepackage{fos}',
-    'preamble': '\n'.join([
-        '\\usepackage[utf8]{inputenc}',
-        '\\usepackage[russian]{babel}',
-    ]),
+    # 'preamble': '\n'.join([
+    #     '\\usepackage[utf8]{inputenc}',
+    #     '\\usepackage[russian]{babel}',
+    # ]),
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
-latex_documents = [
-    (master_doc, 'ReliabilityProjects.tex', 'Reliability Projects Documentation',
-     'Borodin Gregory', 'manual'),
-]
+latex_documents = [(
+    master_doc,
+    'ReliabilityProjects.tex',
+    'Reliability Task 4 Documentation',
+    'Бородин Григорий, группа 420',
+    'manual',
+)]
 
 
 # -- Options for manual page output ---------------------------------------

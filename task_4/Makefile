@@ -4,11 +4,17 @@ IMAGE=grihabor/sphinx.latex.ru:latest
 
 all: docs
 
-docs: build
+docs:
 	docker run -it \
 		-v "$(DOCS):/docs" \
 		$(IMAGE) \
 		sh -c "cd /docs; make latexpdf"
+
+pull:
+	docker pull $(IMAGE)
+
+push:
+	docker push $(IMAGE)
 
 build:
 	docker build . \
