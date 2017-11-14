@@ -1,6 +1,7 @@
 import sys
-from args import Args
-from sample_generation import generate_xml
+
+from sample_generation import generate_xml, Args
+from utils import FILE_INPUT_XML
 
 
 def print_usage():
@@ -9,7 +10,7 @@ def print_usage():
 
 def initialize_args():
     args = Args(
-        xml_path='input.xml',
+        xml_path=FILE_INPUT_XML,
         module_count=5,
         variant_count=3,
     )

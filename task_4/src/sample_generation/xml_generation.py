@@ -1,6 +1,6 @@
 from xml.etree.ElementTree import ElementTree, Element
 
-from args import Args
+from .args import Args
 
 
 def _generate_variants(variant_count):
@@ -28,7 +28,5 @@ def generate_xml(args: Args):
         data.append(module)
 
     et = ElementTree(element=data)
-    #with open(args.xml_path, 'w') as f:
     et.write(args.xml_path)
-
 
