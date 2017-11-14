@@ -15,7 +15,7 @@ def module_to_xml(module):
 
 
 def module_from_xml(xml_obj):
-    module = Module(xml_obj['id'], [])
+    module = Module(xml_obj.attrib['id'], [])
     for variant_xml in xml_obj:
         module.variants.append(Variant.from_xml(variant_xml))
     return module

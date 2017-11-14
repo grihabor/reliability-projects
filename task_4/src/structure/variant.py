@@ -12,9 +12,9 @@ def variant_to_xml(variant):
 
 def variant_from_xml(xml_obj):
     return Variant(
-        variant_id=xml_obj['id'],
-        cost=xml_obj['cost'],
-        reliability=xml_obj['reliability'],
+        variant_id=int(xml_obj.attrib['id']),
+        cost=int(xml_obj.attrib['cost']),
+        reliability=float(xml_obj.attrib['reliability']),
     )
 
 
