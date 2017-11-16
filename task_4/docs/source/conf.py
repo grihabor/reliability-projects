@@ -152,6 +152,7 @@ latex_documents = [(
     'manual',
 )]
 
+latex_toplevel_sectioning = 'section'
 
 # -- Options for manual page output ---------------------------------------
 
