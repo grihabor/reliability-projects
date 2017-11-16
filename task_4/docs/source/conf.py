@@ -149,7 +149,7 @@ latex_documents = [(
     'ReliabilityProjects.tex',
     'Reliability Task 4 Documentation',
     'Бородин Григорий, группа 420',
-    'howto',
+    'manual',
 )]
 
 # latex_toplevel_sectioning = 'section'
@@ -158,10 +158,13 @@ latex_documents = [(
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, 'reliabilityprojects', 'Reliability Projects Documentation',
-     [author], 1)
-]
+man_pages = [(
+    master_doc, 
+    'reliabilityprojects', 
+    'Reliability Projects Documentation',
+    [author],
+    1,
+)]
 
 
 # -- Options for Texinfo output -------------------------------------------
