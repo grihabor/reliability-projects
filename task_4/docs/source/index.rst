@@ -8,7 +8,7 @@ Welcome to Reliability Task 4 documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Содержание:
 
    task_description
    math_problem

@@ -147,7 +147,7 @@ latex_elements = {
 latex_documents = [(
     master_doc,
     'ReliabilityProjects.tex',
-    'Reliability Task 4 Documentation',
+    'Отчет по заданию 4',
     'Бородин Григорий, группа 420',
     'howto',
 )]
