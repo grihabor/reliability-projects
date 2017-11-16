@@ -23,6 +23,7 @@
 =====================
 
 .. highlight:: xml
+
    <sample max_cost="12">
      <module id="0">
        <variant cost="2" id="0" reliability="0.9644566048434823" />
