@@ -8,7 +8,6 @@ Welcome to Reliability Task 4 documentation!
 
 .. toctree::
    :maxdepth: 2
-   :numbered:
    :caption: Contents:
 
    task_description
