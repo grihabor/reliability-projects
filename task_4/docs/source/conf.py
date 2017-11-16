@@ -149,7 +149,7 @@ latex_documents = [(
     'ReliabilityProjects.tex',
     'Reliability Task 4 Documentation',
     'Бородин Григорий, группа 420',
-    'manual',
+    'howto',
 )]
 
 # latex_toplevel_sectioning = 'section'
