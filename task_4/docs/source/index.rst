@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Reliability Projects's documentation!
+Welcome to Reliability Task 4 documentation!
 ================================================
 
 .. toctree::
