@@ -29,7 +29,7 @@ def _find_solution(path):
 
 def run():
     path = FILE_INPUT_XML
-    for i in range(10, 11):
+    for i in range(5, 6):
         for _ in range(1000):
             module_count = i + 1
             variant_count = i
