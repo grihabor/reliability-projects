@@ -11,6 +11,9 @@ Welcome to Reliability Projects's documentation!
    :caption: Contents:
 
    task_description
+   math_problem
    algorithm
-
+   experiments
+   conclusion
+   input_data_description
 
