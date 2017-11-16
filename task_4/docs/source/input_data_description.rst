@@ -22,7 +22,7 @@
 Пример входных данных
 =====================
 
-.. highlight:: xml
+.. code-block:: xml
 
    <sample max_cost="12">
      <module id="0">
